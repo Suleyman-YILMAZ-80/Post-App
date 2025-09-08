@@ -1,7 +1,6 @@
 import { API, http } from "./api"; 
 import type { User } from "../types/Users";
 
-
 export const getUsers = () => http<User[]>(`${API}/users`);
 
 export const updateUser = (id: number, body: Partial<Omit<User,"id">>) =>

@@ -2,7 +2,8 @@
 import { useEffect, useState } from "react";
 import PostsPage from "./pages/PostsPage";
 import UsersPanel from "./components/UsersPanel";
-import { getUsers, type User } from "./services/users";
+import { getUsers } from "./services/users";
+import { type User } from "./types/Users";
 import {UserCircle} from "lucide-react";
 
 export default function App() {

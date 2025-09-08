@@ -1,5 +1,4 @@
-export const API = "http://localhost:3000";
-
+export const API = import.meta.env.VITE_API_URL;
 
 export async function http<T>(input: RequestInfo, init?: RequestInit): Promise<T> {
   const res = await fetch(input, {

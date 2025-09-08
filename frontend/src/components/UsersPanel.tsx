@@ -1,6 +1,7 @@
 // frontend/src/components/UsersPanel.tsx
 import { useEffect, useState } from "react";
-import { getUsers,updateUser, deleteUser,createUser, type User } from "../services/users";
+import { getUsers,updateUser, deleteUser,createUser} from "../services/users";
+import type { User } from "../types/Users";
 import { Pencil, Trash, Check, X } from "lucide-react";
 
 export default function UsersPanel({

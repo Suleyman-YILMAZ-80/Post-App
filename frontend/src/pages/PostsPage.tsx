@@ -8,7 +8,7 @@ import PostCard from "../components/PostCard";
 
 export default function PostsPage({ users }: { users: User[] }) {
   const [posts, setPosts] = useState<Post[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState<boolean>(true);
   const [err, setErr] = useState<string | null>(null);
 
   const userLookup: Record<number, string> = useMemo(() => {

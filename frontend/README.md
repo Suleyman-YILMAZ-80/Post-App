@@ -1,6 +1,6 @@
 # Frontend - Post App
 
-This is the frontend of the Post Management App, built with **React (Vite)** and styled with **Tailwind CSS**.
+This is the frontend of the Post App, built with **React (Vite)** and styled with **Tailwind CSS**.
 
 ## 🚀 Installation
 
@@ -11,7 +11,7 @@ This is the frontend of the Post Management App, built with **React (Vite)** and
    cd Post-App/frontend
 ```
 
-2.Install dependencies:
+2. Install dependencies:
 ```bash
 npm install
 ```
