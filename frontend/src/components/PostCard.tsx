@@ -91,7 +91,6 @@ export default function PostCard({
     />
   </label>
 
-  {/* body textarea */}
   <label className="grid gap-1 font-medium text-slate-700 dark:text-slate-200">
     <span>Body</span>
     <textarea

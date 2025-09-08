@@ -1,67 +1,77 @@
 // frontend/src/pages/PostsPage.tsx
-import { useEffect, useMemo, useState } from "react";
-import { getPosts, createPost, updatePost, deletePost } from "../services/post";
+import { useMemo } from "react";
+import { createPost, updatePost, deletePost } from "../services/post";
 import type { Post } from "../types/Post";
 import type { User } from "../types/Users";
 import PostForm from "../components/PostForm";
 import PostCard from "../components/PostCard";
+import useSWR from "swr";
+import { API_ROUTES } from "../constants/appConstants";
+import { fetcher } from "../services/api";
 
-export default function PostsPage({ users }: { users: User[] }) {
-  const [posts, setPosts] = useState<Post[]>([]);
-  const [loading, setLoading] = useState<boolean>(true);
-  const [err, setErr] = useState<string | null>(null);
+export default function PostsPage({ users }: { users: User[] | undefined }) {
+  const {
+    data: posts,
+    error,
+    isLoading,
+    mutate,
+  } = useSWR<Post[]>(API_ROUTES.POSTS, fetcher);
 
   const userLookup: Record<number, string> = useMemo(() => {
     const list = Array.isArray(users) ? users : [];
-    return list.reduce((acc, u) => { acc[u.id] = u.username; return acc; }, {} as Record<number, string>);
+    return list.reduce((acc, u) => {
+      acc[u.id] = u.username;
+      return acc;
+    }, {} as Record<number, string>);
   }, [users]);
-  
-
-
-  useEffect(() => {
-    (async () => {
-      try {
-        setLoading(true);
-        const p = await getPosts();
-        setPosts(p);
-      } catch (e: any) {
-        setErr(e?.message ?? "Error");
-      } finally {
-        setLoading(false);
-      }
-    })();
-  }, []);
 
   const handleCreate = async (payload: Omit<Post, "id">) => {
-    const optimistic = { id: Date.now(), ...payload } as Post;
-    setPosts(prev => [optimistic, ...prev]);
-    try {
-      const created = await createPost(payload);
-      setPosts(prev => prev.map(p => p.id === optimistic.id ? created : p));
-    } catch {
-      setPosts(prev => prev.filter(p => p.id !== optimistic.id));
-      setErr("Create failed");
-    }
+    mutate(async (current = []) => {
+      try {
+        const created = await createPost(payload);
+        return [created, ...current];
+      } catch {
+        return current; 
+      }
+    }, { revalidate: false });
   };
 
   const handleUpdate = async (p: Post) => {
-    const before = posts;
-    setPosts(prev => prev.map(x => x.id === p.id ? p : x));
-    try {
-      const saved = await updatePost(p.id, { userId: p.userId, title: p.title, body: p.body });
-      setPosts(prev => prev.map(x => x.id === p.id ? saved : x));
-    } catch { setPosts(before); setErr("Update failed"); }
+    mutate(async (current = []) => {
+      const before = [...current];
+      try {
+        const saved = await updatePost(p.id, {
+          userId: p.userId,
+          title: p.title,
+          body: p.body,
+        });
+        return current.map((x) => (x.id === p.id ? saved : x));
+      } catch {
+        return before;
+      }
+    }, { revalidate: false });
   };
 
   const handleDelete = async (id: number) => {
-    const before = posts;
-    setPosts(prev => prev.filter(p => p.id !== id));
-    try { await deletePost(id); }
-    catch { setPosts(before); setErr("Delete failed"); }
+    mutate(async (current = []) => {
+      const before = [...current];
+      try {
+        await deletePost(id);
+        return current.filter((p) => p.id !== id);
+      } catch {
+        return before;
+      }
+    }, { revalidate: false });
   };
 
-  if (loading) return <div className="mx-auto max-w-5xl p-5">Yükleniyor…</div>;
-  if (err) return <div className="mx-auto max-w-5xl p-5 text-red-600">Hata: {err}</div>;
+  if (isLoading)
+    return <div className="mx-auto max-w-5xl p-5">Yükleniyor…</div>;
+  if (error)
+    return (
+      <div className="mx-auto max-w-5xl p-5 text-red-600">
+        Hata: {String(error)}
+      </div>
+    );
 
   return (
     <div className="mx-auto max-w-5xl p-5">
@@ -69,7 +79,7 @@ export default function PostsPage({ users }: { users: User[] }) {
       <section className="rounded-2xl border border-black/10 bg-white/90 p-4 shadow-sm backdrop-blur dark:border-white/10 dark:bg-slate-900/70">
         <h2 className="mb-3 text-lg font-semibold">Posts</h2>
         <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
-          {posts.map((p) => (
+          {posts?.map((p) => (
             <PostCard
               key={p.id}
               post={p}

@@ -1,6 +1,6 @@
 export const API = import.meta.env.VITE_API_URL;
 
-export async function http<T>(input: RequestInfo, init?: RequestInit): Promise<T> {
+export async function fetcher<T>(input: RequestInfo, init?: RequestInit): Promise<T> {
   const res = await fetch(input, {
     headers: { "Content-Type": "application/json", ...(init?.headers || {}) },
     ...init,
