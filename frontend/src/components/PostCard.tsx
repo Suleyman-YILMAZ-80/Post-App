@@ -38,25 +38,21 @@ export default function PostCard({
           <div className="flex gap-2">
             <button className="inline-flex items-center rounded-xl border border-black/10 bg-white px-3 py-1.5 text-sm text-slate-900 hover:bg-slate-50 dark:border-white/10 dark:bg-transparent dark:text-slate-200" onClick={() => setMode("edit")}>
               <Pencil className="mr-1 h-4 w-4"/>
-              Edit
             </button>
             <button className="inline-flex items-center rounded-xl bg-red-600 px-3 py-1.5 text-sm text-white hover:bg-red-500" onClick={() => onDelete(post.id)}>
               <Trash className="mr-1 h-4 w-4"/>
-              Delete
             </button>
           </div>
         ) : (
           <div className="flex gap-2">
             <button className="inline-flex items-center rounded-xl bg-slate-900 px-3 py-1.5 text-sm text-white hover:bg-slate-800 dark:bg-blue-600 dark:hover:bg-blue-500" onClick={handleSave}>
               <Check className="mr-1 h-4 w-4"/>
-              Save
             </button>
             <button
               className="inline-flex items-center rounded-xl border border-black/10 bg-white px-3 py-1.5 text-sm text-slate-900 hover:bg-slate-500 dark:border-white/10 dark:bg-transparent dark:text-slate-200"
               onClick={() => { setDraft(post); setMode("view"); }}
             >
               <X className="mr-1 h-4 w-4"/>
-              Cancel
             </button>
           </div>
         )}
