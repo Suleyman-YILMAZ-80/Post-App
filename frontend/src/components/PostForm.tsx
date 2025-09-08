@@ -75,7 +75,7 @@ export default function PostForm({
 
       <div className="mt-3 flex justify-end">
         <button
-          className="inline-flex items-center rounded-xl bg-slate-900 px-4 py-2 text-white hover:bg-slate-800 active:translate-y-px disabled:opacity-60 dark:bg-blue-600 dark:hover:bg-blue-500"
+          className="inline-flex items-center rounded-xl bg-slate-900 px-4 py-2 text-white hover:bg-slate-800 active:translate-y-px disabled:opacity-60 dark:bg-blue-600 dark:hover:bg-blue-500 cursor-pointer disabled:cursor-not-allowed"
           onClick={handleCreate}
           disabled={!newUserId || !newTitle.trim()}
         >

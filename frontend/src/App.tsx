@@ -24,7 +24,7 @@ export default function App() {
           <strong className="text-base">Admin Panel</strong>
 
           <button
-            className="rounded-xl border border-black/10 px-3 py-1 hover:bg-slate-50 dark:border-white/10"
+            className="rounded-xl border border-black/10 px-3 py-1 hover:bg-slate-50 dark:border-white/20 dark:hover:bg-slate-600 cursor-pointer"
             onClick={() => setUsersOpen(true)}
           >
             <div className="flex justify-center items-center gap-2 hover:animate-pulse">

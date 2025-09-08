@@ -1,5 +1,4 @@
-// frontend/src/pages/PostsPage.tsx
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import { createPost, updatePost, deletePost } from "../services/post";
 import type { Post } from "../types/Post";
 import type { User } from "../types/Users";
@@ -17,6 +16,8 @@ export default function PostsPage({ users }: { users: User[] | undefined }) {
     mutate,
   } = useSWR<Post[]>(API_ROUTES.POSTS, fetcher);
 
+  const [editingId, setEditingId] = useState<number | null>(null);
+
   const userLookup: Record<number, string> = useMemo(() => {
     const list = Array.isArray(users) ? users : [];
     return list.reduce((acc, u) => {
@@ -31,7 +32,7 @@ export default function PostsPage({ users }: { users: User[] | undefined }) {
         const created = await createPost(payload);
         return [created, ...current];
       } catch {
-        return current; 
+        return current;
       }
     }, { revalidate: false });
   };
@@ -78,17 +79,21 @@ export default function PostsPage({ users }: { users: User[] | undefined }) {
       <PostForm users={users} onCreate={handleCreate} />
       <section className="rounded-2xl border border-black/10 bg-white/90 p-4 shadow-sm backdrop-blur dark:border-white/10 dark:bg-slate-900/70">
         <h2 className="mb-3 text-lg font-semibold">Posts</h2>
-        <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
-          {posts?.map((p) => (
-            <PostCard
-              key={p.id}
-              post={p}
-              users={users}
-              userLookup={userLookup}
-              onUpdate={handleUpdate}
-              onDelete={handleDelete}
-            />
-          ))}
+        <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3 items-start">
+          {posts
+            ?.filter((p) => users?.some((u) => u.id === p.userId))
+            .map((p) => (
+              <PostCard
+                key={p.id}
+                post={p}
+                users={users}
+                userLookup={userLookup}
+                onUpdate={handleUpdate}
+                onDelete={handleDelete}
+                editingId={editingId}          
+                setEditingId={setEditingId}
+              />
+            ))}
         </div>
       </section>
     </div>
