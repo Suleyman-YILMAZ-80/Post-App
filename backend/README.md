@@ -8,7 +8,7 @@ This is the backend of the Post Management App, built with **NestJS** (Node.js +
 
 ```bash
  git clone https://github.com/Suleyman-YILMAZ-80/Post-App.git
-  cd Post-App/backend
+cd Post-App/backend
   ```
 
 2. Install dependencies:

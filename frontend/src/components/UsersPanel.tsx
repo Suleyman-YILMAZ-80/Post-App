@@ -3,7 +3,7 @@ import { useState } from "react";
 import { updateUser, deleteUser, createUser } from "../services/users";
 import type { User } from "../types/Users";
 import { X } from "lucide-react";
-import UserRow from "./UserRow";   // 👈 yeni import
+import UserRow from "./UserRow";
 
 export default function UsersPanel({
   open,
@@ -37,23 +37,23 @@ export default function UsersPanel({
     const name = newName.trim();
     const username = newUsername.trim();
     const email = newEmail.trim();
-  
+
     if (!name || !username || !email) {
       setError("Tüm alanlar doldurulmalıdır.");
       return;
     }
-  
+
     if (!isValidEmail(email)) {
       setError("Geçerli bir email adresi giriniz.");
       return;
     }
-  
+
     setError(null);
-  
+
     setNewName("");
     setNewUsername("");
     setNewEmail("");
-  
+
     try {
       await createUser({ name, username, email });
     } catch {
@@ -92,7 +92,7 @@ export default function UsersPanel({
           <ul className="flex-1 divide-y divide-black/10 overflow-y-auto dark:divide-white/10 scrollbar-hide">
             {users?.map((u) => (
               <UserRow
-                key={u.id} 
+                key={u.id}
                 user={u}
                 editingId={editingId}
                 setEditingId={setEditingId}
@@ -117,46 +117,46 @@ export default function UsersPanel({
           </ul>
 
           <div className="border-t border-black/10 p-4 dark:border-white/10">
-  <h3 className="mb-2 font-semibold text-xl">Create User</h3>
-  <div className="grid gap-2 sm:grid-cols-2">
-    <input
-      className="rounded-lg border border-black/10 px-3 py-2 dark:border-white/10 dark:bg-slate-900"
-      placeholder="Name"
-      value={newName}
-      onChange={(e) => setNewName(e.target.value)}
-    />
-    <input
-      className="rounded-lg border border-black/10 px-3 py-2 dark:border-white/10 dark:bg-slate-900"
-      placeholder="Username"
-      value={newUsername}
-      onChange={(e) => setNewUsername(e.target.value)}
-    />
-  </div>
+            <h3 className="mb-2 font-semibold text-xl">Create User</h3>
+            <div className="grid gap-2 sm:grid-cols-2">
+              <input
+                className="rounded-lg border border-black/10 px-3 py-2 dark:border-white/10 dark:bg-slate-900"
+                placeholder="Name"
+                value={newName}
+                onChange={(e) => setNewName(e.target.value)}
+              />
+              <input
+                className="rounded-lg border border-black/10 px-3 py-2 dark:border-white/10 dark:bg-slate-900"
+                placeholder="Username"
+                value={newUsername}
+                onChange={(e) => setNewUsername(e.target.value)}
+              />
+            </div>
 
-  <div className="mt-3">
-    <input
-      className={`w-full rounded-lg border px-3 py-2 dark:border-white/10 dark:bg-slate-900 
+            <div className="mt-3">
+              <input
+                className={`w-full rounded-lg border px-3 py-2 dark:border-white/10 dark:bg-slate-900 
                  ${error?.includes("email") ? "border-red-500" : ""}`}
-      placeholder="Email"
-      value={newEmail}
-      onChange={(e) => setNewEmail(e.target.value)}
-    />
-  </div>
+                placeholder="Email"
+                value={newEmail}
+                onChange={(e) => setNewEmail(e.target.value)}
+              />
+            </div>
 
-  {error && (
-    <p className="mt-2 text-sm text-red-500">{error}</p>
-  )}
+            {error && (
+              <p className="mt-2 text-sm text-red-500">{error}</p>
+            )}
 
-  <div className="mt-3 flex justify-end">
-    <button
-      className="rounded-lg bg-slate-900 px-4 py-2 text-sm text-white hover:bg-slate-800 disabled:opacity-50 dark:bg-blue-600 dark:hover:bg-blue-500 cursor-pointer disabled:cursor-not-allowed"
-      onClick={handleCreate}
-      disabled={ !newName.trim() || !newUsername.trim() || !newEmail.trim() }
-    >
-      Add User
-    </button>
-  </div>
-</div>
+            <div className="mt-3 flex justify-end">
+              <button
+                className="rounded-lg bg-slate-900 px-4 py-2 text-sm text-white hover:bg-slate-800 disabled:opacity-50 dark:bg-blue-600 dark:hover:bg-blue-500 cursor-pointer disabled:cursor-not-allowed"
+                onClick={handleCreate}
+                disabled={!newName.trim() || !newUsername.trim() || !newEmail.trim()}
+              >
+                Add User
+              </button>
+            </div>
+          </div>
 
         </div>
       </aside>

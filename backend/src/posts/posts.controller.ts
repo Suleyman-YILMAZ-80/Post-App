@@ -7,7 +7,6 @@ import { UpdatePostDto } from './dto/update-post.dto';
 export class PostsController {
   constructor(private readonly posts: PostsService) {}
 
-  // /posts
   @Get('posts') findAll() { return this.posts.findAll(); }
 
   @Get('posts/:id')
@@ -26,13 +25,11 @@ export class PostsController {
     this.posts.remove(id); return { ok: true };
   }
 
-  // Özel: belirli user'a post ekle
   @HttpPost('users/:id/posts')
   createForUser(@Param('id', ParseIntPipe) id: number, @Body() dto: Omit<CreatePostDto, 'userId'>) {
     return this.posts.createForUser(id, dto);
   }
 
-  // Opsiyonel: o kullanıcıya ait postlar
   @Get('users/:id/posts')
   findByUser(@Param('id', ParseIntPipe) id: number) {
     return this.posts.findByUser(id);

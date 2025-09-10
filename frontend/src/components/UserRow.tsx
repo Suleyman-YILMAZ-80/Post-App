@@ -61,7 +61,7 @@ export default function UserRow({
             <div className="shrink-0 space-x-2">
               <button
                 className="rounded-lg border px-3 py-1 text-sm hover:bg-slate-50 dark:border-white/10"
-                onClick={() => setEditingId(user.id)} // sadece birini açar
+                onClick={() => setEditingId(user.id)}
               >
                 <Pencil className="inline-block h-6 w-4" />
               </button>
@@ -126,7 +126,7 @@ export default function UserRow({
                 className="rounded-lg border px-3 py-1 text-sm hover:bg-slate-50 dark:border-white/10"
                 onClick={() => {
                   setDraft(user);
-                  setEditingId(null); // iptal → çık
+                  setEditingId(null);
                   setError(null);
                 }}
               >
